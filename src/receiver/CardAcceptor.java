@@ -25,13 +25,13 @@ public class CardAcceptor implements MoneyReceiver {
         while (isRun) {
             try {
                 if (numberOfCard == null || numberOfCard.isEmpty() || numberOfCard.isBlank()) {
-                    String number = inputFromConsole("Введите номер карты (16 цифр).");
+                    String number = tryParseToNumber("Введите номер карты (16 цифр).");
                     if (number.length() != 16) {
                         throw new CustomException("Введено не верное количество символов, повторите еще раз.");
                     }
                     numberOfCard = number;
                 } else if (password == null || password.isEmpty() || password.isBlank()){
-                    String onTimePassword = checkPassword("Введите пароль.");
+                    String onTimePassword = tryParseToNumber("Введите пароль.");
                     if (onTimePassword.length() != 4) {
                         throw new CustomException("Введен не верный пароль.");
                 }
@@ -59,11 +59,11 @@ public class CardAcceptor implements MoneyReceiver {
         }
     }
 
-    protected String checkPassword(String text) {
+    protected String tryParseToNumber(String text) {
         while (true) {
             String resultText = inputFromConsole(text);
             try {
-                int result = Integer.parseInt(resultText);
+                long result = Long.parseLong(resultText);
                 if (result < 0) {
                     throw new CustomException("Пароль должен содержать только цифры.");
                 }
