@@ -3,8 +3,8 @@ package receiver;
 public class CoinAcceptor implements MoneyReceiver {
     private int amount;
 
-    public CoinAcceptor(int amount) {
-        this.amount = amount;
+    public CoinAcceptor() {
+
     }
 
     @Override

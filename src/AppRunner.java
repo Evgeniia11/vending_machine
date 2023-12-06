@@ -3,6 +3,7 @@ import model.*;
 import receiver.CardAcceptor;
 import receiver.CoinAcceptor;
 import receiver.MoneyReceiver;
+import util.InputFromConsole;
 import util.UniversalArray;
 import util.UniversalArrayImpl;
 
@@ -25,7 +26,6 @@ public class AppRunner {
                 new Mars(ActionLetter.F, 80),
                 new Pistachios(ActionLetter.G, 130)
         });
-        acceptor = new CardAcceptor();
     }
 
     public static void run() {
@@ -38,12 +38,20 @@ public class AppRunner {
     private void startSimulation() {
         print("В автомате доступны:");
         showProducts(products);
+        if (acceptor == null){
+            int getacceptor = InputFromConsole.parseInt("Для пополнения через карту введите * 1 *, " +
+                    "для пополнения монетами введите * 2 *.");
+            if (getacceptor == 1){
+                acceptor = new CardAcceptor();
+            } else {
+                acceptor = new CoinAcceptor();
+            }
+        }
+            print("Доступная сумма: " + acceptor.getAmount());
 
-        print("Доступная сумма: " + acceptor.getAmount());
-
-        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
-        allowProducts.addAll(getAllowedProducts().toArray());
-        chooseAction(allowProducts);
+            UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
+            allowProducts.addAll(getAllowedProducts().toArray());
+            chooseAction(allowProducts);
 
     }
 
@@ -78,7 +86,7 @@ public class AppRunner {
             if ("h".equalsIgnoreCase(action)) {
                 isExit = true;
             } else {
-                print("Недопустимая буква. Попрбуйте еще раз.");
+                print("Недопустимая буква. Попробуйте еще раз.");
                 chooseAction(products);
             }
         }
