@@ -1,5 +1,6 @@
 package receiver;
 
+
 public interface MoneyReceiver {
 
     public int getAmount();
