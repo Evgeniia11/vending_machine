@@ -1,4 +1,5 @@
 import enums.ActionLetter;
+import exceptions.CustomException;
 import model.*;
 import receiver.CardAcceptor;
 import receiver.CoinAcceptor;
@@ -13,7 +14,7 @@ public class AppRunner {
 
     private final UniversalArray<Product> products = new UniversalArrayImpl<>();
 
-    private  MoneyReceiver acceptor;
+    private MoneyReceiver acceptor;
 
     private static boolean isExit = false;
 
@@ -38,20 +39,20 @@ public class AppRunner {
     private void startSimulation() {
         print("В автомате доступны:");
         showProducts(products);
-        if (acceptor == null){
-            int getacceptor = InputFromConsole.parseInt("Для пополнения через карту введите * 1 *, " +
+        if (acceptor == null) {
+            int getAcceptor = InputFromConsole.parseInt("Для пополнения через карту введите * 1 *, " +
                     "для пополнения монетами введите * 2 *.");
-            if (getacceptor == 1){
+            if (getAcceptor == 1) {
                 acceptor = new CardAcceptor();
             } else {
                 acceptor = new CoinAcceptor();
             }
         }
-            print("Доступная сумма: " + acceptor.getAmount());
+        print("Доступная сумма: " + acceptor.getAmount());
 
-            UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
-            allowProducts.addAll(getAllowedProducts().toArray());
-            chooseAction(allowProducts);
+        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
+        allowProducts.addAll(getAllowedProducts().toArray());
+        chooseAction(allowProducts);
 
     }
 
@@ -75,14 +76,18 @@ public class AppRunner {
             return;
         }
         try {
-            for (int i = 0; i < products.size(); i++) {
-                if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
-                    acceptor.setAmount(acceptor.getAmount() - products.get(i).getPrice());
-                    print("Вы купили " + products.get(i).getName());
-                    break;
+            if (products.size() > 0) {
+                for (int i = 0; i < products.size(); i++) {
+                    if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
+                        acceptor.setAmount(acceptor.getAmount() - products.get(i).getPrice());
+                        print("Вы купили " + products.get(i).getName());
+                        break;
+                    }
                 }
+            } else {
+                throw new CustomException("Введены не корректные данные.");
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | CustomException e) {
             if ("h".equalsIgnoreCase(action)) {
                 isExit = true;
             } else {
