@@ -4,7 +4,7 @@ public class CoinAcceptor implements MoneyReceiver {
     private int amount;
 
     public CoinAcceptor(int amount) {
-this.amount = amount;
+        this.amount = amount;
     }
 
     @Override

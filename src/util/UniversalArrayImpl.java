@@ -5,9 +5,6 @@ import java.util.Arrays;
 public class UniversalArrayImpl<T> implements UniversalArray<T> {
     private Object[] array;
 
-    public UniversalArrayImpl(T[] a) {
-        array = a;
-    }
 
     public UniversalArrayImpl() {
         this.array = new Object[]{};
@@ -32,39 +29,13 @@ public class UniversalArrayImpl<T> implements UniversalArray<T> {
     }
 
     @Override
-    public void delete(int index) {
-        array[index] = null;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
-                Object tmp = array[i];
-                array[i] = array[i + 1];
-                array[i + 1] = tmp;
-            }
-        }
-        array = Arrays.copyOfRange(array, 0, array.length - 1);
-    }
-
-    @Override
     public int size() {
         return array.length;
-    }
-
-    @Override
-    public <E> E[] toArray(E[] a) {
-        int size = size();
-        if (a.length < size)
-            return Arrays.copyOf(array, size,
-                    (Class<? extends E[]>) a.getClass());
-        System.arraycopy(array, 0, a, 0, size);
-        if (a.length > size)
-            a[size] = null;
-        return a;
     }
 
     @Override
     public Object[] toArray() {
         return Arrays.copyOf(array, array.length, Object[].class);
     }
-
 
 }

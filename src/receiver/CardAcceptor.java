@@ -25,7 +25,7 @@ public class CardAcceptor implements MoneyReceiver {
     }
 
     @Override
-    public void addMoney(){
+    public void addMoney() {
         boolean isRun = true;
         while (isRun) {
             try {
@@ -35,21 +35,21 @@ public class CardAcceptor implements MoneyReceiver {
                         throw new CustomException("Введено не верное количество символов, повторите еще раз.");
                     }
                     numberOfCard = number;
-                } else if (password == null || password.isEmpty() || password.isBlank()){
+                } else if (password == null || password.isEmpty() || password.isBlank()) {
                     String onTimePassword = InputFromConsole.tryParseToNumber("Введите пароль.");
                     if (onTimePassword.length() != 4) {
                         throw new CustomException("Введен не верный пароль.");
-                }
+                    }
                     password = onTimePassword;
                 } else {
                     int sum = InputFromConsole.parseInt("Введите сумму пополнения. " +
                             "\nДоступная сумма на балансе карты: " + balance);
-                    if (sum <= balance){
+                    if (sum <= balance) {
                         amount += sum;
                         balance -= sum;
                         isRun = false;
                     } else {
-                  throw new CustomException("Недостаточно денег на балансе.");
+                        throw new CustomException("Недостаточно денег на балансе.");
                     }
                 }
             } catch (NumberFormatException | CustomException e) {

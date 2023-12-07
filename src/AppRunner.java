@@ -46,7 +46,6 @@ public class AppRunner {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
         chooseAction(allowProducts);
-
     }
 
     private UniversalArray<Product> getAllowedProducts() {
@@ -59,21 +58,6 @@ public class AppRunner {
         return allowProducts;
     }
 
-    public void chooseAcceptor(){
-        while (true){
-            int getAcceptor = InputFromConsole.parseInt("Для пополнения через карту введите * 1 *, " +
-                    "для пополнения монетами введите * 2 *.");
-            if (getAcceptor == 1) {
-                acceptor = new CardAcceptor(acceptor.getAmount());
-                break;
-            } else if (getAcceptor == 2){
-                acceptor = new CoinAcceptor(acceptor.getAmount());
-                break;
-            } else {
-                System.err.println("Неверно выбран способ пополнения.");
-            }
-        }
-    }
 
     private void chooseAction(UniversalArray<Product> products) {
         print(" a - Пополнить баланс");
@@ -81,7 +65,6 @@ public class AppRunner {
         print(" h - Выйти");
         String action = fromConsole().substring(0, 1);
         if ("a".equalsIgnoreCase(action)) {
-
             chooseAcceptor();
             acceptor.addMoney();
 
@@ -107,13 +90,27 @@ public class AppRunner {
                 chooseAction(products);
             }
         }
-
-
     }
 
     private void showActions(UniversalArray<Product> products) {
         for (int i = 0; i < products.size(); i++) {
             print(String.format(" %s - %s", products.get(i).getActionLetter().getValue(), products.get(i).getName()));
+        }
+    }
+
+    public void chooseAcceptor() {
+        while (true) {
+            int getAcceptor = InputFromConsole.parseInt("Для пополнения через карту введите * 1 *, " +
+                    "для пополнения монетами введите * 2 *.");
+            if (getAcceptor == 1) {
+                acceptor = new CardAcceptor(acceptor.getAmount());
+                break;
+            } else if (getAcceptor == 2) {
+                acceptor = new CoinAcceptor(acceptor.getAmount());
+                break;
+            } else {
+                System.err.println("Неверно выбран способ пополнения.");
+            }
         }
     }
 
