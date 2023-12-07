@@ -3,12 +3,16 @@ package receiver;
 import exceptions.CustomException;
 import util.InputFromConsole;
 
-import java.util.Scanner;
 
 public class CardAcceptor implements MoneyReceiver {
     private int amount;
+    private static int balance = 500;
     private String numberOfCard;
     private String password;
+
+    public CardAcceptor(int amount) {
+        this.amount = amount;
+    }
 
     @Override
     public int getAmount() {
@@ -38,12 +42,19 @@ public class CardAcceptor implements MoneyReceiver {
                 }
                     password = onTimePassword;
                 } else {
-                   amount += InputFromConsole.parseInt("Введите сумму пополнения.");
-                   isRun = false;
+                    int sum = InputFromConsole.parseInt("Введите сумму пополнения. " +
+                            "\nДоступная сумма на балансе карты: " + balance);
+                    if (sum <= balance){
+                        amount += sum;
+                        balance -= sum;
+                        isRun = false;
+                    } else {
+                  throw new CustomException("Недостаточно денег на балансе.");
+                    }
                 }
             } catch (NumberFormatException | CustomException e) {
                 e.printStackTrace();
-                System.err.println("Введены неверные данные.");
+                System.err.println("Введены неверные данные. " + e.getMessage());
             }
         }
     }

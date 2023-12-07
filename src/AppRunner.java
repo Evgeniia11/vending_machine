@@ -27,6 +27,7 @@ public class AppRunner {
                 new Mars(ActionLetter.F, 80),
                 new Pistachios(ActionLetter.G, 130)
         });
+        acceptor = new CoinAcceptor(0);
     }
 
     public static void run() {
@@ -39,15 +40,7 @@ public class AppRunner {
     private void startSimulation() {
         print("В автомате доступны:");
         showProducts(products);
-        if (acceptor == null) {
-            int getAcceptor = InputFromConsole.parseInt("Для пополнения через карту введите * 1 *, " +
-                    "для пополнения монетами введите * 2 *.");
-            if (getAcceptor == 1) {
-                acceptor = new CardAcceptor();
-            } else {
-                acceptor = new CoinAcceptor();
-            }
-        }
+
         print("Доступная сумма: " + acceptor.getAmount());
 
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
@@ -66,13 +59,32 @@ public class AppRunner {
         return allowProducts;
     }
 
+    public void chooseAcceptor(){
+        while (true){
+            int getAcceptor = InputFromConsole.parseInt("Для пополнения через карту введите * 1 *, " +
+                    "для пополнения монетами введите * 2 *.");
+            if (getAcceptor == 1) {
+                acceptor = new CardAcceptor(acceptor.getAmount());
+                break;
+            } else if (getAcceptor == 2){
+                acceptor = new CoinAcceptor(acceptor.getAmount());
+                break;
+            } else {
+                System.err.println("Неверно выбран способ пополнения.");
+            }
+        }
+    }
+
     private void chooseAction(UniversalArray<Product> products) {
         print(" a - Пополнить баланс");
         showActions(products);
         print(" h - Выйти");
         String action = fromConsole().substring(0, 1);
         if ("a".equalsIgnoreCase(action)) {
+
+            chooseAcceptor();
             acceptor.addMoney();
+
             return;
         }
         try {
