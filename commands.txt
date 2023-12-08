@@ -1,0 +1,13 @@
+При создании и работе с системой контроля версий мной были использованы следующие команды:
+
+
+git remote add origin https://github.com/Evgeniia11/vending_machine.git 
+git push -u origin --all  
+git branch home_work_25_ 
+git checkout home_work_25_
+git add -> добавления и изменения файлов происходили через эту команду к каждому файлу отдельно
+git commit -m "Оставляла коментарии по каждому файлу"
+git push origin master -> после коммитов для файлов
+git pull origin master
+git checkout master
+git merge home_work_25_
